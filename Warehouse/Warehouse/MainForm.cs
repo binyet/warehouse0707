@@ -4701,7 +4701,7 @@ namespace Warehouse
             //iu.DownloadCheckUpdateXml();
             //iu.LatestVersion();
 
-            String Version = iu.localversion;
+            Version Version = iu.localversion;
             FileInfo finfo = new FileInfo(System.Windows.Forms.Application.StartupPath + "\\Warehouse.exe");
             //MessageBox.Show("新版本功能：");
             new Thread(new ParameterizedThreadStart(showBox)).Start("版本信息: " + iu.localversion + "\r\n\r\n更新时间: " + finfo.LastAccessTime.ToString("yyyy-MM-dd"));

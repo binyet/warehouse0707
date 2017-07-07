@@ -27,3 +27,12 @@ E:\gitRepositories\Warehouse\Update\obj\Release\Update.Properties.Resources.reso
 E:\gitRepositories\Warehouse\Update\obj\Release\Update.csproj.GenerateResource.Cache
 E:\gitRepositories\Warehouse\Update\obj\Release\Update.exe
 E:\gitRepositories\Warehouse\Update\obj\Release\Update.pdb
+C:\Users\鲁彬\Desktop\料仓项目\0610\Warehouse\Update\bin\Release\Update.exe.config
+C:\Users\鲁彬\Desktop\料仓项目\0610\Warehouse\Update\bin\Release\Update.exe
+C:\Users\鲁彬\Desktop\料仓项目\0610\Warehouse\Update\bin\Release\Update.pdb
+C:\Users\鲁彬\Desktop\料仓项目\0610\Warehouse\Update\obj\Release\Update.csprojResolveAssemblyReference.cache
+C:\Users\鲁彬\Desktop\料仓项目\0610\Warehouse\Update\obj\Release\Update.Form1.resources
+C:\Users\鲁彬\Desktop\料仓项目\0610\Warehouse\Update\obj\Release\Update.Properties.Resources.resources
+C:\Users\鲁彬\Desktop\料仓项目\0610\Warehouse\Update\obj\Release\Update.csproj.GenerateResource.Cache
+C:\Users\鲁彬\Desktop\料仓项目\0610\Warehouse\Update\obj\Release\Update.exe
+C:\Users\鲁彬\Desktop\料仓项目\0610\Warehouse\Update\obj\Release\Update.pdb

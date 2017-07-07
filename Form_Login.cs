@@ -168,7 +168,10 @@ namespace Warehouse
             iu.NowVersion();
             iu.DownloadCheckUpdateXml();
             iu.LatestVersion();
-           
+
+            if (iu.localversion == null || iu.latesversion == null)
+                return;
+
             //MessageBox.Show("新版本功能：");
             if (iu.latesversion > iu.localversion)
             {

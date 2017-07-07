@@ -17,9 +17,8 @@ namespace Update
         public WebClient client = new WebClient();
         //解压
         //public ZipHelper zh = new ZipHelper();
-
-        public Version latesversion;//最新版本
-        public Version localversion;//当前版本
+        public Version latesversion;
+        public Version localversion;
         //主窗体
         public Form1 form;
         //通知内容
@@ -91,7 +90,7 @@ namespace Update
             }
             else if (!File.Exists(updateDir + @"\update.xml"))
             {
-                nnidtext = "检查更新失败，请检查网络设置";
+                nnidtext = "检查更新失败,请检查网络";
                 MessageBox.Show(nnidtext);
                 //Environment.Exit(0);
             }
@@ -104,7 +103,6 @@ namespace Update
         {
             if (localversion == null || latesversion == null)
                 return;
-
             if (localversion == latesversion)
             {
                 nnidtext = "恭喜你，已经更新到最新版本";
