@@ -209,6 +209,10 @@ namespace Warehouse
             this.progressBar2 = new System.Windows.Forms.ProgressBar();//操作进度的进度条显示
             this.label19 = new System.Windows.Forms.Label();//操作进度的文字显示
             this.label22 = new System.Windows.Forms.Label();//操作进度的类型显示
+            this.重启设备ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();//重启设备按钮
+            this.重启全套设备ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();//重启全套设备
+            this.重启中控设备ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();//重启中控设备
+            
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -451,6 +455,7 @@ namespace Warehouse
             this.关于ToolStripMenuItem,
             this.数据库管理ToolStripMenuItem,
             this.开启回传数据ToolStripMenuItem,
+            this.重启设备ToolStripMenuItem,
             this.获取基础信息ToolStripMenuItem,
             this.直接查询ToolStripMenuItem,
             this.料位图形显示ToolStripMenuItem});
@@ -1872,6 +1877,29 @@ namespace Warehouse
             this.label22.TabIndex = 2;
             this.label22.Text = "";
             // 
+            // 重启设备ToolStripMenuItem
+            // 
+            this.重启设备ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.重启全套设备ToolStripMenuItem,
+            this.重启中控设备ToolStripMenuItem});
+            this.重启设备ToolStripMenuItem.Name = "重启设备ToolStripMenuItem";
+            this.重启设备ToolStripMenuItem.Size = new System.Drawing.Size((int)(162 * SW_percent), (int)(24 * SH_percent));
+            this.重启设备ToolStripMenuItem.Text = "重启设备";
+            // 
+            // 重启全套设备ToolStripMenuItem
+            // 
+            this.重启全套设备ToolStripMenuItem.Name = "重启全套设备ToolStripMenuItem";
+            this.重启全套设备ToolStripMenuItem.Size = new System.Drawing.Size((int)(134 * SW_percent), (int)(24 * SH_percent));
+            this.重启全套设备ToolStripMenuItem.Text = "重启全套设备";
+            this.重启全套设备ToolStripMenuItem.Click += new System.EventHandler(this.重启全套设备ToolStripMenuItem_Click);
+            // 
+            // 重启中控设备ToolStripMenuItem
+            // 
+            this.重启中控设备ToolStripMenuItem.Name = "重启中控设备ToolStripMenuItem";
+            this.重启中控设备ToolStripMenuItem.Size = new System.Drawing.Size((int)(134 * SW_percent), (int)(24 * SH_percent));
+            this.重启中控设备ToolStripMenuItem.Text = "重启中控设备";
+            this.重启中控设备ToolStripMenuItem.Click += new System.EventHandler(this.重启中控设备ToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -2106,7 +2134,9 @@ namespace Warehouse
         private System.Windows.Forms.Timer show_timer;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.Label label22;
-
+        private System.Windows.Forms.ToolStripMenuItem 重启设备ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 重启全套设备ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 重启中控设备ToolStripMenuItem;
 
     }
 }

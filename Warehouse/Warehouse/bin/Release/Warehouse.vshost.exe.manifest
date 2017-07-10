@@ -78,26 +78,26 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Update.exe" size="14336">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Update.exe" size="14848">
       <assemblyIdentity name="Update" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>yRIIqdwhOu7vWQdWEiGDufNuuLg=</dsig:DigestValue>
+        <dsig:DigestValue>knDKY/pVGNVgsa1c6KVPAcx6lkY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Warehouse.exe" size="294400">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Warehouse.exe" size="295424">
       <assemblyIdentity name="Warehouse" version="2.0.3.10" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>aiHEK1ZKZZiQjz2YSB3gZgdIqns=</dsig:DigestValue>
+        <dsig:DigestValue>gnDEDmGD9Nocw+6O6QEBZh/3v34=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

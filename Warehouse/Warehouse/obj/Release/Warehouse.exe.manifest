@@ -85,19 +85,19 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>7RuhXRlOUT9HBnfCRIc4O/LToqI=</dsig:DigestValue>
+        <dsig:DigestValue>knDKY/pVGNVgsa1c6KVPAcx6lkY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Warehouse.exe" size="294400">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Warehouse.exe" size="296448">
       <assemblyIdentity name="Warehouse" version="2.0.3.10" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>T3bmdu75pGazEZLuVH7F+UUCaqI=</dsig:DigestValue>
+        <dsig:DigestValue>L8E0vyyxjkD1QMm89Eq7dBdPFUg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

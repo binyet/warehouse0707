@@ -253,7 +253,7 @@ namespace Warehouse
                 Thread loadAuto = new Thread(LoadAuto);
                 loadAuto.Start();
 
-                new Thread(StartKiller).Start();
+                //new Thread(StartKiller).Start();
 
             }
 
@@ -265,12 +265,12 @@ namespace Warehouse
         /// <param name="obj"></param>
         private void showBox(object obj)
         {
-            string msg = (string)obj;
+            string message = (string)obj;
             if (msgBoxNum >= 2000)
             {
                 msgBoxNum = 0;
             }
-            MyMessageBox MymsgBox = new MyMessageBox(msg, (msgBoxNum++).ToString());
+            MyMessageBox MymsgBox = new MyMessageBox(message, (msgBoxNum++).ToString());
             MymsgBox.ShowBox();
         }
 
@@ -330,7 +330,7 @@ namespace Warehouse
                 else
                 {
                     //MessageBox.Show("未保存厂区码", "提示");
-                    new Thread(new ParameterizedThreadStart(showBox)).Start("为保存厂区码");
+                    new Thread(new ParameterizedThreadStart(showBox)).Start("未保存厂区码");
 
                 }
             }
@@ -2317,7 +2317,7 @@ namespace Warehouse
 
                                         comboBox3.Items.Remove(getName(send_ins[i].fac_num));
 
-                                        for (int it = CalcVol_list.Count - 1; it >= 0; i--)
+                                        for (int it = CalcVol_list.Count - 1; it >= 0; it--)
                                         {
                                             if (equip.ToString().PadLeft(2, '0').Equals(CalcVol_list[it].fac_num))
                                             {
@@ -2540,7 +2540,7 @@ namespace Warehouse
                 {//开始回传数据
                     int data_int = Int32.Parse(data);
                     DateTime now = DateTime.Now;
-                    backdata_path = "data_" + equip.ToString().PadLeft(2, '0') + "_" + now.Month.ToString().PadLeft(2, '0') + now.Day.ToString().PadLeft(2, '0') + "_" + now.Hour.ToString().PadLeft(2, '0') + now.Minute.ToString().PadLeft(2, '0') + ".txt";
+                    backdata_path = "data_" + equip.ToString().PadLeft(2, '0') + "_" + now.Month.ToString().PadLeft(2, '0') + now.Day.ToString().PadLeft(2, '0') + "_" + now.Hour.ToString().PadLeft(2, '0') + now.Minute.ToString().PadLeft(2, '0')+"_"+data_int + ".txt";
                     recv_num = data_int;
                     for (int i = 0; i < 200; i++)
                     {
@@ -2845,6 +2845,127 @@ namespace Warehouse
                         }
 
                     }
+                    else if (data_int == 64)
+                    {
+                        try
+                        {
+
+                            int addr = Int32.Parse(s[1], System.Globalization.NumberStyles.HexNumber);
+                            //string sql = "insert into [binlog] values('" + addr.ToString() + "','软件故障,没配置  密度', '" + DateTime.Now.ToString() + "');";
+                            string sql = "insert into [binlog] values('" + addr.ToString() + "', '盘库过程出错', '" + ins + "', '垂直测量失败，取消盘库', '" + time + "')";
+                            DataBase db = new DataBase();
+                            db.command.CommandText = sql;
+                            db.command.Connection = db.connection;
+                            db.command.ExecuteNonQuery();
+                            db.Close();
+                            //new Thread(new ParameterizedThreadStart(showBox)).Start(getName(equip.ToString().PadLeft(2, '0')) + "  没配置  密度");
+                            //MessageBox.Show(", "软件故障");
+                        }
+                        catch (SqlException se)
+                        {
+                            Thread thread_file = new Thread(new ParameterizedThreadStart(method_file));
+                            thread_file.Start(se.ToString());
+                            new Thread(new ParameterizedThreadStart(showBox)).Start("请检查数据库是否创建好");
+                            //MessageBox.Show("请检查数据库是否创建好\r\n", "提示");
+                        }
+                    }
+                    else if (data_int == 65)
+                    {
+                        try
+                        {
+
+                            int addr = Int32.Parse(s[1], System.Globalization.NumberStyles.HexNumber);
+                            //string sql = "insert into [binlog] values('" + addr.ToString() + "','软件故障,没配置  密度', '" + DateTime.Now.ToString() + "');";
+                            string sql = "insert into [binlog] values('" + addr.ToString() + "', '盘库过程出错', '" + ins + "', '累计测量失败10个点，取消盘库', '" + time + "')";
+                            DataBase db = new DataBase();
+                            db.command.CommandText = sql;
+                            db.command.Connection = db.connection;
+                            db.command.ExecuteNonQuery();
+                            db.Close();
+                            //new Thread(new ParameterizedThreadStart(showBox)).Start(getName(equip.ToString().PadLeft(2, '0')) + "  没配置  密度");
+                            //MessageBox.Show(", "软件故障");
+                        }
+                        catch (SqlException se)
+                        {
+                            Thread thread_file = new Thread(new ParameterizedThreadStart(method_file));
+                            thread_file.Start(se.ToString());
+                            new Thread(new ParameterizedThreadStart(showBox)).Start("请检查数据库是否创建好");
+                            //MessageBox.Show("请检查数据库是否创建好\r\n", "提示");
+                        }
+                    }
+                    else if (data_int == 66)
+                    {
+                        try
+                        {
+
+                            int addr = Int32.Parse(s[1], System.Globalization.NumberStyles.HexNumber);
+                            //string sql = "insert into [binlog] values('" + addr.ToString() + "','软件故障,没配置  密度', '" + DateTime.Now.ToString() + "');";
+                            string sql = "insert into [binlog] values('" + addr.ToString() + "', '盘库过程出错', '" + ins + "', '负值过大', '" + time + "')";
+                            DataBase db = new DataBase();
+                            db.command.CommandText = sql;
+                            db.command.Connection = db.connection;
+                            db.command.ExecuteNonQuery();
+                            db.Close();
+                            //new Thread(new ParameterizedThreadStart(showBox)).Start(getName(equip.ToString().PadLeft(2, '0')) + "  没配置  密度");
+                            //MessageBox.Show(", "软件故障");
+                        }
+                        catch (SqlException se)
+                        {
+                            Thread thread_file = new Thread(new ParameterizedThreadStart(method_file));
+                            thread_file.Start(se.ToString());
+                            new Thread(new ParameterizedThreadStart(showBox)).Start("请检查数据库是否创建好");
+                            //MessageBox.Show("请检查数据库是否创建好\r\n", "提示");
+                        }
+                    }
+                    else if (data_int == 67)
+                    {
+                        try
+                        {
+
+                            int addr = Int32.Parse(s[1], System.Globalization.NumberStyles.HexNumber);
+                            //string sql = "insert into [binlog] values('" + addr.ToString() + "','软件故障,没配置  密度', '" + DateTime.Now.ToString() + "');";
+                            string sql = "insert into [binlog] values('" + addr.ToString() + "', '盘库过程出错', '" + ins + "', '超过满仓体积', '" + time + "')";
+                            DataBase db = new DataBase();
+                            db.command.CommandText = sql;
+                            db.command.Connection = db.connection;
+                            db.command.ExecuteNonQuery();
+                            db.Close();
+                            //new Thread(new ParameterizedThreadStart(showBox)).Start(getName(equip.ToString().PadLeft(2, '0')) + "  没配置  密度");
+                            //MessageBox.Show(", "软件故障");
+                        }
+                        catch (SqlException se)
+                        {
+                            Thread thread_file = new Thread(new ParameterizedThreadStart(method_file));
+                            thread_file.Start(se.ToString());
+                            new Thread(new ParameterizedThreadStart(showBox)).Start("请检查数据库是否创建好");
+                            //MessageBox.Show("请检查数据库是否创建好\r\n", "提示");
+                        }
+                    }
+                    else if (data_int == 68)
+                    {
+                        try
+                        {
+
+                            int addr = Int32.Parse(s[1], System.Globalization.NumberStyles.HexNumber);
+                            //string sql = "insert into [binlog] values('" + addr.ToString() + "','软件故障,没配置  密度', '" + DateTime.Now.ToString() + "');";
+                            string sql = "insert into [binlog] values('" + addr.ToString() + "', '盘库过程出错', '" + ins + "', '错误数据过多', '" + time + "')";
+                            DataBase db = new DataBase();
+                            db.command.CommandText = sql;
+                            db.command.Connection = db.connection;
+                            db.command.ExecuteNonQuery();
+                            db.Close();
+                            //new Thread(new ParameterizedThreadStart(showBox)).Start(getName(equip.ToString().PadLeft(2, '0')) + "  没配置  密度");
+                            //MessageBox.Show(", "软件故障");
+                        }
+                        catch (SqlException se)
+                        {
+                            Thread thread_file = new Thread(new ParameterizedThreadStart(method_file));
+                            thread_file.Start(se.ToString());
+                            new Thread(new ParameterizedThreadStart(showBox)).Start("请检查数据库是否创建好");
+                            //MessageBox.Show("请检查数据库是否创建好\r\n", "提示");
+                        }
+                    }
+
                 }
             }
             catch (Exception exc)
@@ -3294,13 +3415,13 @@ namespace Warehouse
 
                 InitDataSet();
                 dataGridView1.Columns[0].HeaderCell.Value = "料仓名称";
-                dataGridView1.Columns[1].HeaderCell.Value = "物料体积";
-                dataGridView1.Columns[2].HeaderCell.Value = "物料重量";
-                dataGridView1.Columns[3].HeaderCell.Value = "料仓温度";
-                dataGridView1.Columns[4].HeaderCell.Value = "料仓湿度";
+                dataGridView1.Columns[1].HeaderCell.Value = "物料体积(m³)";
+                dataGridView1.Columns[2].HeaderCell.Value = "物料重量(吨)";
+                dataGridView1.Columns[3].HeaderCell.Value = "料仓温度(℃)";
+                dataGridView1.Columns[4].HeaderCell.Value = "料仓湿度(%RH)";
                 dataGridView1.Columns[5].HeaderCell.Value = "时间日期";
                 dataGridView1.Columns[5].DefaultCellStyle.Format = "yy/MM/dd HH:mm:ss";
-                dataGridView1.Columns[5].Width = 200;
+                dataGridView1.Columns[5].Width = 180;
 
                 db.Close();
             }
@@ -4695,7 +4816,6 @@ namespace Warehouse
 
         private void 关于ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
             InitializationUpdate iu = new InitializationUpdate();
             iu.NowVersion();
             //iu.DownloadCheckUpdateXml();
@@ -5372,35 +5492,35 @@ namespace Warehouse
             }
         }
 
-
-        private void StartKiller()
+        private void 重启全套设备ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-            timer.Interval = 10000;//10秒启动
-            timer.Tick += new EventHandler(CloseMessTimer_Tick);
-            timer.Start();
-        }
-        private void CloseMessTimer_Tick(object sender, EventArgs e)
-        {
-            KillMessageBox();
-            //停止计时器
-            ((System.Windows.Forms.Timer)sender).Stop();
-        }
-        private void KillMessageBox()
-        {
-            //查找MessageBox的弹出窗口,注意对应标题
-            IntPtr ptr = FindWindow(null, "提示");
-            if (ptr != IntPtr.Zero)
+            for (int i = checkedListBox2.Items.Count - 1; i >= 0; i--)
             {
-                //查找到窗口则关闭
-                PostMessage(ptr, WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
-            }
-        }
-        [DllImport("user32.dll", EntryPoint = "FindWindow", CharSet = CharSet.Auto)]
-        private extern static IntPtr FindWindow(string lpClassName, string lpWindowName);
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern int PostMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
-        public const int WM_CLOSE = 0x10;
+                //bool isoperating = false;
+                if (checkedListBox2.GetItemChecked(i))
+                {
+                    //MessageBox.Show(checkedListBox1.Items[i].ToString());
+                    string id = selectID(checkedListBox2.Items[i].ToString());
+                    string d = Data.Data(comboBox4.Text, id, "20", "0000");
+                    sendIns_queue.Enqueue(new FacMessage(ins_num++, "15", id, false, 3, "重启全套设备", d, 3, s_Produce));
 
+                }
+            } //end for
+        }
+        private void 重启中控设备ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            for (int i = checkedListBox2.Items.Count - 1; i >= 0; i--)
+            {
+                //bool isoperating = false;
+                if (checkedListBox2.GetItemChecked(i))
+                {
+                    //MessageBox.Show(checkedListBox1.Items[i].ToString());
+                    string id = selectID(checkedListBox2.Items[i].ToString());
+                    string d = Data.Data(comboBox4.Text, id, "24", "0000");
+                    sendIns_queue.Enqueue(new FacMessage(ins_num++, "19", id, false, 3, "重启中控设备", d, 3, s_Produce));
+
+                }
+            } //end for
+        }
     }
 }
