@@ -118,7 +118,7 @@ namespace Warehouse
         /// <param name="e"></param>
         private void MainForm_Load(object sender, EventArgs e)
         {//打开这个窗体时执行
-
+            Console.WriteLine("fdsfdsf");
             label7.Text = curr_user.name;
             if (curr_user.admin.Equals("1"))
             {//根据用户权限来处理空间的显示或者隐藏
@@ -1549,7 +1549,10 @@ namespace Warehouse
                         float cylinderH = float.Parse(CylinderH);
                         float pyramidH = float.Parse(PyramidH);
                         float density = float.Parse(Density);
-
+                        float diameterInSql = 0;
+                        float cylinderHInSql = 0;
+                        float pyramidHInsSql = 0;
+                        float densityInSql = 0;
 
                         string addr_eq = "";//保存在数据库中的设备地址
                         string sql = "select * from [bininfo] where [BinID]=" + equip.ToString().PadLeft(2, '0');
@@ -1562,6 +1565,10 @@ namespace Warehouse
                             while (db.Dr.Read())
                             {
                                 addr_eq = db.Dr["BinID"].ToString();
+                                diameterInSql = float.Parse(db.Dr["Diameter"].ToString());
+                                cylinderHInSql = float.Parse(db.Dr["CylinderH"].ToString());
+                                pyramidHInsSql = float.Parse(db.Dr["PyramidH"].ToString());
+                                densityInSql = float.Parse(db.Dr["Density"].ToString());
                             }
                             db.Dr.Close();
                             //conn.Close();
@@ -1590,6 +1597,47 @@ namespace Warehouse
                             }
                             else
                             {//如果有这个料仓，就设置参数,并在在线列表中显示
+                                string time = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+                                if (diameter / 100 != diameterInSql)
+                                {//如果发现有不相等的情况，记录下时间
+                                    string saveMsg = diameterInSql.ToString() + "-->" + (diameter / 100).ToString();
+                                    DataBase dbSaveLog = new DataBase();
+                                    string sqlSaveLog = "insert into [binlog] values('" + equip.ToString() + "', '仓筒直径被修改', '" + ins + "', '"+saveMsg+"', '" + time + "')";
+                                    dbSaveLog.command.CommandText = sqlSaveLog;
+                                    dbSaveLog.command.Connection = dbSaveLog.connection;
+                                    dbSaveLog.command.ExecuteNonQuery();
+                                    db.Close();
+                                }
+                                if (cylinderH / 100 != cylinderHInSql)
+                                {
+                                    string saveMsg = cylinderHInSql.ToString() + "-->" + (cylinderH / 100).ToString();
+                                    DataBase dbSaveLog = new DataBase();
+                                    string sqlSaveLog = "insert into [binlog] values('" + equip.ToString() + "', '仓筒高度被修改', '" + ins + "', '" + saveMsg + "', '" + time + "')";
+                                    dbSaveLog.command.CommandText = sqlSaveLog;
+                                    dbSaveLog.command.Connection = dbSaveLog.connection;
+                                    dbSaveLog.command.ExecuteNonQuery();
+                                    db.Close();
+                                }
+                                if (pyramidH / 100 != pyramidHInsSql)
+                                {
+                                    string saveMsg = pyramidHInsSql.ToString() + "-->" + (pyramidH / 100).ToString();
+                                    DataBase dbSaveLog = new DataBase();
+                                    string sqlSaveLog = "insert into [binlog] values('" + equip.ToString() + "', '下锥高度被修改', '" + ins + "', '" + saveMsg + "', '" + time + "')";
+                                    dbSaveLog.command.CommandText = sqlSaveLog;
+                                    dbSaveLog.command.Connection = dbSaveLog.connection;
+                                    dbSaveLog.command.ExecuteNonQuery();
+                                    db.Close();
+                                }
+                                if (density / 1000 != densityInSql)
+                                {
+                                    string saveMsg = densityInSql.ToString() + "-->" + (density / 100).ToString();
+                                    DataBase dbSaveLog = new DataBase();
+                                    string sqlSaveLog = "insert into [binlog] values('" + equip.ToString() + "', '物料密度被修改', '" + ins + "', '" + saveMsg + "', '" + time + "')";
+                                    dbSaveLog.command.CommandText = sqlSaveLog;
+                                    dbSaveLog.command.Connection = dbSaveLog.connection;
+                                    dbSaveLog.command.ExecuteNonQuery();
+                                    db.Close();
+                                }
                                 parameter("Diameter", (diameter / 100).ToString(), equip.ToString().PadLeft(2, '0'));
                                 parameter("CylinderH", (cylinderH / 100).ToString(), equip.ToString().PadLeft(2, '0'));
                                 parameter("PyramidH", (pyramidH / 100).ToString(), equip.ToString().PadLeft(2, '0'));
@@ -2554,7 +2602,8 @@ namespace Warehouse
                     //    now.Hour.ToString().PadLeft(2, '0') + ":" + now.Minute.ToString().PadLeft(2, '0') + ":" + now.Second.ToString().PadLeft(2, '0');
                     string time = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
 
-                    int data_int = Int32.Parse(data, System.Globalization.NumberStyles.HexNumber);
+                    int data_int = Int32.Parse(data);
+
                     if (data_int == 0)
                     {
                         try
@@ -2873,7 +2922,6 @@ namespace Warehouse
                     {
                         try
                         {
-
                             int addr = Int32.Parse(s[1], System.Globalization.NumberStyles.HexNumber);
                             //string sql = "insert into [binlog] values('" + addr.ToString() + "','软件故障,没配置  密度', '" + DateTime.Now.ToString() + "');";
                             string sql = "insert into [binlog] values('" + addr.ToString() + "', '盘库过程出错', '" + ins + "', '累计测量失败10个点，取消盘库', '" + time + "')";
@@ -5494,13 +5542,13 @@ namespace Warehouse
 
         private void 重启全套设备ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            for (int i = checkedListBox2.Items.Count - 1; i >= 0; i--)
+            for (int i = checkedListBox1.Items.Count - 1; i >= 0; i--)
             {
                 //bool isoperating = false;
-                if (checkedListBox2.GetItemChecked(i))
+                if (checkedListBox1.GetItemChecked(i))
                 {
                     //MessageBox.Show(checkedListBox1.Items[i].ToString());
-                    string id = selectID(checkedListBox2.Items[i].ToString());
+                    string id = selectID(checkedListBox1.Items[i].ToString());
                     string d = Data.Data(comboBox4.Text, id, "20", "0000");
                     sendIns_queue.Enqueue(new FacMessage(ins_num++, "15", id, false, 3, "重启全套设备", d, 3, s_Produce));
 
@@ -5509,13 +5557,14 @@ namespace Warehouse
         }
         private void 重启中控设备ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            for (int i = checkedListBox2.Items.Count - 1; i >= 0; i--)
+
+            for (int i = checkedListBox1.Items.Count - 1; i >= 0; i--)
             {
                 //bool isoperating = false;
-                if (checkedListBox2.GetItemChecked(i))
+                if (checkedListBox1.GetItemChecked(i))
                 {
                     //MessageBox.Show(checkedListBox1.Items[i].ToString());
-                    string id = selectID(checkedListBox2.Items[i].ToString());
+                    string id = selectID(checkedListBox1.Items[i].ToString());
                     string d = Data.Data(comboBox4.Text, id, "24", "0000");
                     sendIns_queue.Enqueue(new FacMessage(ins_num++, "19", id, false, 3, "重启中控设备", d, 3, s_Produce));
 

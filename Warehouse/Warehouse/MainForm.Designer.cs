@@ -210,7 +210,7 @@ namespace Warehouse
             this.label19 = new System.Windows.Forms.Label();//操作进度的文字显示
             this.label22 = new System.Windows.Forms.Label();//操作进度的类型显示
             this.重启设备ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();//重启设备按钮
-            this.重启全套设备ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();//重启全套设备
+            this.重启全套设备ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();//重启中控扫描
             this.重启中控设备ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();//重启中控设备
             
             this.menuStrip1.SuspendLayout();
@@ -1890,7 +1890,7 @@ namespace Warehouse
             // 
             this.重启全套设备ToolStripMenuItem.Name = "重启全套设备ToolStripMenuItem";
             this.重启全套设备ToolStripMenuItem.Size = new System.Drawing.Size((int)(134 * SW_percent), (int)(24 * SH_percent));
-            this.重启全套设备ToolStripMenuItem.Text = "重启全套设备";
+            this.重启全套设备ToolStripMenuItem.Text = "重启中控扫描";
             this.重启全套设备ToolStripMenuItem.Click += new System.EventHandler(this.重启全套设备ToolStripMenuItem_Click);
             // 
             // 重启中控设备ToolStripMenuItem

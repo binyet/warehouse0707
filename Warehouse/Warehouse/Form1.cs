@@ -11,14 +11,25 @@ using System.Windows.Forms;
 
 namespace Warehouse
 {
+    public class CheckData
+    {
+        public float CalcHeight;//用于计算的高度值
+        public float CalcRadius;//用于计算的半径
+        public float MeansureLength;//测量的长度值
+        public CheckData()
+        {
+            CalcHeight = new float();
+            CalcRadius = new float();
+            MeansureLength = new float();
+        }
+    }
     public partial class Form1 : Form
     {
         private List<int> angle_list = new List<int>();
 
-        double CHECK_PERCENT_VALUE = 0.07;    //数据检测过滤前后点阈值
-        float[] radius2_array;//根据高度进行过滤的角度值
-        float[] height2_array;//根据高度进行过滤的高度值
-        float[] distance2_array;//根据高度进行过滤的长度值
+        static double CHECK_PERCENT_VALUE = 0.07;    //数据检测过滤前后点阈值
+        public CheckData[] MeansureValue;//用于计算过滤
+        public CheckData[] OriginalValue;//原始值
         float diameter;
         float height_total = 0;
         float top_height = 0.3F;
@@ -50,17 +61,7 @@ namespace Warehouse
             //form.Show();
             this.Refresh();
             Graphics g = panel1.CreateGraphics();
-            
-            /**
-            Pen myPen = new Pen(Color.Black, 4);
-            Point p1 = new Point(40, 40);
-            Point p2 = new Point(70, 20);
-            Point p3 = new Point(110, 70);
 
-            Point p4 = new Point(70, 130);
-            Point[] points = { p1, p2, p3, p4 };
-            g.DrawPolygon(myPen, points);
-             * */
             float x_max = panel1.Width - 10;
             float y_max = panel1.Height - 10;
             System.Console.WriteLine("x-max:{0}\n", x_max);
@@ -113,28 +114,22 @@ namespace Warehouse
                 return;
             }
             string[] distance_strarray = str_distance.Split(',');
-            //string[] height_strarray = str_height.Split(' ');
-            /**
-            if (radius_strarray.Length != height_strarray.Length)
+
+            OriginalValue = new CheckData[distance_strarray.Length];
+            MeansureValue = new CheckData[distance_strarray.Length];
+            for (int i = 0; i < distance_strarray.Length; i++)
             {
-                MessageBox.Show("半径数据必须和高度数据数目相同");
-                return;
+                OriginalValue[i] = new CheckData();
+                MeansureValue[i] = new CheckData();
             }
-             * */
-            float[] distance_array = new float[distance_strarray.Length];
-            distance2_array = new float[distance_strarray.Length];
+
             //float[] height_array = new float[height_strarray.Length];
             for (int i = 0; i < distance_strarray.Length; i++)
             {
                 try
                 {
-                    distance_array[i] = float.Parse(distance_strarray[i].Trim());
-                    /**
-                    if (radius_array[i] > data_x_max)
-                    {
-                        data_x_max = radius_array[i];
-                    }
-                     * */
+                    OriginalValue[i].MeansureLength = float.Parse(distance_strarray[i].Trim());
+                    MeansureValue[i].MeansureLength = float.Parse(distance_strarray[i].Trim());
                 }
                 catch
                 {
@@ -142,25 +137,21 @@ namespace Warehouse
                     return;
                 }
             }
-            //计算半径值和物料高度值
-            float[] radius_array = new float[distance_array.Length];
-            float[] height_array = new float[distance_array.Length];
-            radius2_array = new float[distance_array.Length];
-            height2_array = new float[distance_array.Length];
             if (angle_list.Count != 0)
             {
                 for (int i = 0; i < distance_strarray.Length; i++)
                 //将i改为真正获取的角度值
                 {
-                    radius_array[i] = distance_array[i] * (float)(Math.Sin(angle_list[i] * Math.PI / 180)) + x_init;
-                    if (radius_array[i] > data_x_max)
+                    OriginalValue[i].CalcRadius = OriginalValue[i].MeansureLength * (float)(Math.Sin(angle_list[i] * Math.PI / 180)) + x_init;
+                    if (OriginalValue[i].CalcRadius > data_x_max)
                     {
-                        data_x_max = radius_array[i];
+                        data_x_max = OriginalValue[i].CalcRadius;
                     }
-                    height_array[i] = height_total - distance_array[i] * (float)(Math.Cos(angle_list[i] * Math.PI / 180));
-                    if (height_array[i] > data_y_max)
+                    OriginalValue[i].CalcHeight = OriginalValue[i].MeansureLength * (float)(Math.Cos(angle_list[i] * Math.PI / 180));
+
+                    if ((height_total - OriginalValue[i].CalcHeight) > data_y_max)
                     {
-                        data_y_max = height_array[i];
+                        data_y_max = height_total - OriginalValue[i].CalcHeight;
                     }
                 }
             }
@@ -168,9 +159,8 @@ namespace Warehouse
             //二次校验的高度和距离
             for (int i = 0; i < distance_strarray.Length; i++)
             {
-                //radius2_array[i] = radius_array[i];
-                height2_array[i] = height_array[i];
-                distance2_array[i] = distance_array[i];
+                MeansureValue[i].CalcHeight = OriginalValue[i].CalcHeight;
+                MeansureValue[i].MeansureLength = OriginalValue[i].MeansureLength;
             }
 
             //二次校验的半径
@@ -179,15 +169,19 @@ namespace Warehouse
                 for (int i = 0; i < distance_strarray.Length; i++)
                 //将i改为真正获取的角度值
                 {
-                    radius2_array[i] = distance2_array[i] * (float)(Math.Sin(angle_list[i] * Math.PI / 180)) + x_init;
-                    if (radius2_array[i] > data_x_max)
+                    MeansureValue[i].CalcRadius = MeansureValue[i].MeansureLength * (float)(Math.Sin(angle_list[i] * Math.PI / 180)) + x_init;
+                    if (MeansureValue[i].CalcRadius > data_x_max)
                     {
-                        data_x_max = radius2_array[i];
+                        data_x_max = MeansureValue[i].CalcRadius;
                     }
-                    height2_array[i] = height_total - distance2_array[i] * (float)(Math.Cos(angle_list[i] * Math.PI / 180));
-                    if (height2_array[i] > data_y_max)
+                    if (MeansureValue[i].CalcRadius > data_x_max)
                     {
-                        data_y_max = height2_array[i];
+                        data_x_max = MeansureValue[i].CalcRadius;
+                    }
+                    MeansureValue[i].CalcHeight = MeansureValue[i].MeansureLength * (float)(Math.Cos(angle_list[i] * Math.PI / 180));
+                    if ((height_total - MeansureValue[i].CalcHeight) > data_y_max)
+                    {
+                        data_y_max = (height_total - MeansureValue[i].CalcHeight);
                     }
                 }
             }
@@ -206,16 +200,8 @@ namespace Warehouse
             }
 
 
+            DataCheck(MeansureValue.Length);
 
-            //根据长度进行数据检验
-            //DataCheck(angle_list[angle_list.Count - 1]);
-            //MessageBox.Show(angle_list[angle_list.Count - 1]+" "+distance_array.Length);
-            //MessageBox.Show(angle_list.Count+"");
-            DataCheck(distance_array.Length - 1);
-
-            //根据高度进行数据检验
-            //DataCheckDistance(angle_list[angle_list.Count - 1]);
-            //DataCheckDistance(distance_array.Length);
             //画直径示意线
             Pen p = new Pen(Color.Green, 2);
             
@@ -229,33 +215,24 @@ namespace Warehouse
             //画中心线
             p.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
             g.DrawLine(p, new PointF(x_max/2, 0), new PointF(x_max/2, y_max));
-            /**
-            for (int i = 0; i < height_strarray.Length; i++)
-            {
-                height_array[i] = float.Parse(height_strarray[i]);
-                if (height_array[i] > data_y_max)
-                {
-                    data_y_max = height_array[i];
-                }
-            }
-             * */
+
             Font drawfont = new Font("宋体",8);
             SolidBrush drawbrush = new SolidBrush(Color.Black);
             //画一次校验线
-            for (int i = 0; i < radius_array.Length;i++ )
+            for (int i = 0; i < OriginalValue.Length;i++ )
             {
-                String drawstring = "(" + radius_array[i] + "," + height_array[i] + ")";
-                float x1 = radius_array[i];
+                //String drawstring = "(" + radius_array[i] + "," + height_array[i] + ")";
+                float x1 = OriginalValue[i].CalcRadius;
                 x1 = x1 * (x_max / data_x_max);
-                float y1 = height_array[i];
+                float y1 = height_total - OriginalValue[i].CalcHeight;
                 y1 = y_max-y1 * (y_max / data_y_max);
                 System.Console.WriteLine("y1:{0}\n",y1);
                 //g.DrawString(drawstring, drawfont, drawbrush, new PointF(x1, y1));
-                if (i + 1 < radius_array.Length)
+                if (i + 1 < OriginalValue.Length)
                 {
-                    float x2 = radius_array[i + 1];
+                    float x2 = OriginalValue[i + 1].CalcRadius;
                     x2 = x2 * (x_max / data_x_max);
-                    float y2 = height_array[i + 1];
+                    float y2 =height_total - OriginalValue[i + 1].CalcHeight;
                     y2 = y_max - y2 * (y_max / data_y_max);
                     p = new Pen(Color.Blue, 2);
                     
@@ -265,20 +242,20 @@ namespace Warehouse
             }
             Thread.Sleep(500);
             //画二次检验线
-            for (int i = 0; i < radius2_array.Length; i++)
+            for (int i = 0; i < MeansureValue.Length; i++)
             {
                 //String drawstring = "(" + radius2_array[i] + "," + height2_array[i] + ")";
-                float x1 = radius2_array[i];
+                float x1 = MeansureValue[i].CalcRadius;
                 x1 = x1 * (x_max / data_x_max);
-                float y1 = height2_array[i];
+                float y1 = height_total - MeansureValue[i].CalcHeight;
                 y1 = y_max - y1 * (y_max / data_y_max);
                 //System.Console.WriteLine("y1:{0}\n", y1);
                 //g.DrawString(drawstring, drawfont, drawbrush, new PointF(x1, y1));
-                if (i + 1 < radius2_array.Length)
+                if (i + 1 < MeansureValue.Length)
                 {
-                    float x2 = radius2_array[i + 1];
+                    float x2 = MeansureValue[i + 1].CalcRadius;
                     x2 = x2 * (x_max / data_x_max);
-                    float y2 = height2_array[i + 1];
+                    float y2 =height_total - MeansureValue[i + 1].CalcHeight;
                     y2 = y_max - y2 * (y_max / data_y_max);
                     p = new Pen(Color.Red, 2);
 
@@ -288,139 +265,77 @@ namespace Warehouse
                 }
             }
 
-        }
+        }	
 
-        //const double[] g_faCosTable={1.0000,0.9998,0.9994,0.9986,0.9976,0.9962,0.9945,0.9925,0.9903,0.9877,
-        //                                                0.9848,0.9816,0.9781,0.9744,0.9703,0.9659,0.9613,0.9563,0.9511,0.9455,
-        //                                                0.9397,0.9336,0.9272,0.9205,0.9135,0.9063,0.8988,0.8910,0.8829,0.8746,
-        //                                                0.8660,0.8572,0.8480,0.8387,0.8290,0.8192,0.8090,0.7986,0.7880,0.7771,
-        //                                                0.7660,0.7547,0.7431,0.7314,0.7193,0.7071,0.6947,0.6820,0.6691,0.6561,
-        //                                                0.6428,0.6293,0.6157,0.6018,0.5878,0.5736,0.5592,0.5446,0.5299,0.5150,
-        //                                                0.5000,0.4848,0.4695,0.4540,0.4384,0.4226,0.4067,0.3907,0.3746,0.3584,
-        //                                                0.3420,0.3256,0.3090,0.2924,0.2756,0.2588,0.2419,0.2250,0.2079,0.1908,
-        //                                                0.1736,0.1564,0.1392,0.1219,0.1045,0.0872,0.0698,0.0523,0.0349,0.0175};
-
-        //Warehouse.ColumnHeight   仓库柱体高度
-        //Warehouse.VertebralHeight  仓库下锥高度
-        //上面两个变量之和，可以用程序里面的总高度来代替
-        //Warehouse.TopHeight  距离顶端的高度														
-				
         /**
           * @brief  数据有效性检验
 	        * @param  angle 总测量角度值
           * @retval none
         */
-        public void DataCheck(int angle)
-        {//根据高度进行过滤
-	        int i;
-	        float average = 0;
-	
-	        //检验其余点正确性
-	
-	        //计算垂直高度平均值
-	        for(i=0; i<angle; i++)
-	        {
-                
-                //MeansureValue[i].CalcHeight = MeansureValue[i].MeansureLength*g_faCosTable[i];
-		        average += height2_array[i];
-	        }
-	        average /= angle;
-            MessageBox.Show(average+"");
+        void DataCheck(int angle)
+        {
+            int i;
+            float average = 0;
 
-            //MessageBox.Show(average+"");
-	        //进行数据检验，粗过滤
-	        for(i=1; i<angle; i++)
-	        {
-                //MessageBox.Show("for");
-                //MessageBox.Show(radius2_array[i-1]+"  "+radius2_array[i]);
-                float heightAir_i = height_total - height2_array[i];//当前料面距顶的高度
-                float heightAir_i_1 = height_total - height2_array[i - 1];//前一个点料面距顶的高度
-                if (((heightAir_i > average * 3)//条件1：大于3倍平均值
-                    || (heightAir_i > heightAir_i_1 * 2))//条件2：并且比前一个值的2倍还大
-                )
-                {
-
-                    //height2_array[i] = height2_array[i-1];//使用前一个数据覆盖
-                    //MessageBox.Show("大于");
-
-                    float height_air = height_total - height2_array[i - 1];
-
-                    distance2_array[i] = (float)(height_air / Math.Cos(angle_list[i] * Math.PI / 180));
-
-                    radius2_array[i] = (float)(distance2_array[i] * Math.Sin(angle_list[i] * Math.PI / 180));
-                    height2_array[i] = height_total - height_air;
-                    //MessageBox.Show(angle_list[i]+"\r\n"+height_air.ToString()+"\r\n"+distance2_array[i].ToString()+"\r\n"+radius2_array[i].ToString());
-                }
-
-                heightAir_i = height_total - height2_array[i];//当前料面距顶的高度
-                heightAir_i_1 = height_total - height2_array[i - 1];//前一个点料面距顶的高度
-                if (((heightAir_i < average / 3)//条件1：小于1/3倍平均值
-                    || (heightAir_i < heightAir_i_1 / 2))//条件2：并且比前一个值的1/2还小
-                )
-                {
-
-                    //height2_array[i] = height2_array[i-1];//使用前一个数据覆盖
-
-                    float height_air = height_total - height2_array[i - 1];
-
-                    distance2_array[i] = (float)(height_air / Math.Cos(angle_list[i] * Math.PI / 180));
-
-                    radius2_array[i] = (float)(distance2_array[i] * Math.Sin(angle_list[i] * Math.PI / 180));
-                    height2_array[i] = height_total - height_air;
-                    //MessageBox.Show(angle_list[i]+"\r\n"+height_air.ToString()+"\r\n"+distance2_array[i].ToString()+"\r\n"+radius2_array[i].ToString());
-                }
-
-                heightAir_i = height_total - height2_array[i];//当前料面距顶的高度
-                heightAir_i_1 = height_total - height2_array[i - 1];//前一个点料面距顶的高度
-                if (radius2_array[i] < radius2_array[i - 1])
-                {
-                    //MessageBox.Show(i.ToString());
-                    float height_air = height_total - height2_array[i - 1];
-
-                    distance2_array[i] = (float)(height_air / Math.Cos(angle_list[i] * Math.PI / 180));
-
-                    radius2_array[i] = (float)(distance2_array[i] * Math.Sin(angle_list[i] * Math.PI / 180));
-                    height2_array[i] = height_total - height_air;
-                }
-	        }
-	
-            //进行数据滤波，细过滤
-            for (i = 1; i <= angle; i++)
+            //计算垂直高度平均值
+            for (i = 0; i < angle; i++)
             {
+                average += MeansureValue[i].CalcHeight;
+            }
+            average /= angle;
 
-                float heightAir_i = height_total - height2_array[i];//当前料面距顶的高度
-                float heightAir_i_1 = height_total - height2_array[i - 1];//前一个点料面距顶的高度
-                if ((heightAir_i > heightAir_i_1 * (1 + CHECK_PERCENT_VALUE))//比前一个值的1.07倍大
-                    || (heightAir_i < heightAir_i_1 * (1 - CHECK_PERCENT_VALUE)))//比前一个0.93倍小
+            //进行数据检验，粗过滤
+            for (i = 1; i < angle; i++)
+            {
+                if ((MeansureValue[i].CalcHeight > average * 3)                         //条件1：大于3倍平均值
+                    || (MeansureValue[i].CalcHeight > MeansureValue[i - 1].CalcHeight * 2)) //条件2：比前一个值的2倍还大
                 {
-                    //MessageBox.Show("细过滤");
-                    //MessageBox.Show(i.ToString());
-                    if (i == angle)//最后一个点，使用覆盖
+                    ReplaceValues(i);
+                }
+
+                if ((MeansureValue[i].CalcHeight < average / 3)                         //条件1：小于均值的1/3
+                    || (MeansureValue[i].CalcHeight < MeansureValue[i - 1].CalcHeight / 2)) //条件2：比前一个值的1/2还小
+                {
+                    ReplaceValues(i);
+                }
+
+                //判断半径，正常情况半径越来越大
+                if (MeansureValue[i].CalcRadius < MeansureValue[i - 1].CalcRadius)//半径比前一个小，错误
+                {
+                    ReplaceValues(i);
+                }
+            }
+
+            //进行数据滤波，细过滤
+            for (i = 1; i < angle; i++)
+            {
+                if ((MeansureValue[i].CalcHeight > MeansureValue[i - 1].CalcHeight * (1 + CHECK_PERCENT_VALUE))//比前一个值的1.07倍大
+                    || (MeansureValue[i].CalcHeight < MeansureValue[i - 1].CalcHeight * (1 - CHECK_PERCENT_VALUE)))//比前一个0.93倍小
+                {
+                    if (i == angle - 1)//最后一个点，使用覆盖
                     {
-                        //MessageBox.Show(height2_array[i].ToString());
-                        float height_air = height_total - height2_array[i - 1];
-
-                        distance2_array[i] = (float)(height_air / Math.Cos(angle_list[i] * Math.PI / 180));
-
-                        radius2_array[i] = (float)(distance2_array[i] * Math.Sin(angle_list[i] * Math.PI / 180));
-                        height2_array[i] = height_total - height_air;
-                        //MessageBox.Show(height_air.ToString()+"\r\n"+distance2_array[i].ToString() + "\r\n" + angle_list[i].ToString());
-
+                        ReplaceValues(i);
                     }
                     else//其余点使用平均
                     {
-                        distance2_array[i] = (distance2_array[i - 1] + distance2_array[i + 1]) / 2;//使用前后均值替换
-                        height2_array[i] = (height2_array[i - 1] + height2_array[i + 1]) / 2;//使用前后均值替换
-                        //MessageBox.Show(i + " " + distance2_array[i]);
+                        MeansureValue[i].MeansureLength = (MeansureValue[i - 1].MeansureLength + MeansureValue[i + 1].MeansureLength) / 2;//使用前后均值替换
+                        MeansureValue[i].CalcHeight = (MeansureValue[i - 1].CalcHeight + MeansureValue[i + 1].CalcHeight) / 2;//使用前后均值替换
+                        MeansureValue[i].CalcRadius = (MeansureValue[i - 1].CalcRadius + MeansureValue[i + 1].CalcRadius) / 2;//使用前后均值替换
                     }
                 }
             }
         }
 
+        private void ReplaceValues(int i)
+        {
+            MeansureValue[i].MeansureLength = (float)(MeansureValue[i-1].CalcHeight / Math.Cos(angle_list[i] * Math.PI / 180));
 
+            MeansureValue[i].CalcRadius = (float)(MeansureValue[i].MeansureLength * Math.Sin(angle_list[i] * Math.PI / 180));
+            MeansureValue[i].CalcHeight = MeansureValue[i - 1].CalcHeight;
+
+        }
         private void button2_Click(object sender, EventArgs e)
         {
-            
             OpenFileDialog openFileDialog1 = new OpenFileDialog();   //显示选择文件对话框 
             openFileDialog1.InitialDirectory = System.Windows.Forms.Application.StartupPath + "\\back_data";
             openFileDialog1.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";

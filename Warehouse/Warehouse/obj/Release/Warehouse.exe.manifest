@@ -90,14 +90,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Warehouse.exe" size="296448">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Warehouse.exe" size="297984">
       <assemblyIdentity name="Warehouse" version="2.0.3.10" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>L8E0vyyxjkD1QMm89Eq7dBdPFUg=</dsig:DigestValue>
+        <dsig:DigestValue>bRly2GMZ4yyH1e2pwQKzYXegd3c=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

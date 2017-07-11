@@ -113,7 +113,6 @@ C:\Users\鲁彬\Desktop\料仓项目\0610\Warehouse\Warehouse\bin\Release\ICShar
 C:\Users\鲁彬\Desktop\料仓项目\0610\Warehouse\Warehouse\bin\Release\Update.pdb
 C:\Users\鲁彬\Desktop\料仓项目\0610\Warehouse\Warehouse\obj\Release\Warehouse.csprojResolveAssemblyReference.cache
 C:\Users\鲁彬\Desktop\料仓项目\0610\Warehouse\Warehouse\obj\Release\Warehouse.ChartForm.resources
-C:\Users\鲁彬\Desktop\料仓项目\0610\Warehouse\Warehouse\obj\Release\Warehouse.Form1.resources
 C:\Users\鲁彬\Desktop\料仓项目\0610\Warehouse\Warehouse\obj\Release\Warehouse.Form_Login.resources
 C:\Users\鲁彬\Desktop\料仓项目\0610\Warehouse\Warehouse\obj\Release\Warehouse.MainForm.resources
 C:\Users\鲁彬\Desktop\料仓项目\0610\Warehouse\Warehouse\obj\Release\Warehouse.Monitor.resources
@@ -122,3 +121,4 @@ C:\Users\鲁彬\Desktop\料仓项目\0610\Warehouse\Warehouse\obj\Release\Wareho
 C:\Users\鲁彬\Desktop\料仓项目\0610\Warehouse\Warehouse\obj\Release\Warehouse.csproj.GenerateResource.Cache
 C:\Users\鲁彬\Desktop\料仓项目\0610\Warehouse\Warehouse\obj\Release\Warehouse.exe.manifest
 C:\Users\鲁彬\Desktop\料仓项目\0610\Warehouse\Warehouse\obj\Release\Warehouse.application
+C:\Users\鲁彬\Desktop\料仓项目\0610\Warehouse\Warehouse\obj\Release\Warehouse.CHeckData.resources
