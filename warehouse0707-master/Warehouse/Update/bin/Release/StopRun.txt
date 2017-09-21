@@ -1,8 +1,0 @@
-System.IO.FileNotFoundException: D:\warehouse0707-master\warehouse0707-master\Warehouse\Update\bin\Release\Warehouse.exe
-   在 System.Diagnostics.FileVersionInfo.GetVersionInfo(String fileName)
-   在 Update.InitializationUpdate.NowVersion() 位置 D:\warehouse0707-master\warehouse0707-master\Warehouse\Update\InitializationUpdate.cs:行号 45
-   在 Update.Form1.checkVersion(Object obj) 位置 D:\warehouse0707-master\warehouse0707-master\Warehouse\Update\Form1.cs:行号 70
-   在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
-   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
-   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
-   在 System.Threading.ThreadHelper.ThreadStart(Object obj)
