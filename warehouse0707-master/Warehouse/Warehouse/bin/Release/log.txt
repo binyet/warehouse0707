@@ -1,0 +1,3 @@
+错误信息是：1|bindata| 时间是：2017/6/12 17:54:33
+错误信息是：1|bindata| 时间是：2017/6/12 18:20:44
+错误信息是：数据表没有创建齐全6|bininfo|binauto|bindata|binlog|config|server| 时间是：2017/8/8 16:25:54
